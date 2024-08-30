@@ -1,59 +1,56 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
+using Zenject;
+using System.Linq;
 
-public class GridManager : MonoBehaviour
+public class GridManager : IDisposable, Zenject.IInitializable
 {
-    [SerializeField] private int _width, _height;
-    [SerializeField] private Tile _tilePrefab;
-    [SerializeField] private float _tileSpacing;
-    [SerializeField] private SwipeDetection _swipeDetection;
-
+    private Tile.Factory _tileFactory;
     private Tile[,] _tiles;
+    private Vector2 _startPosition;
     private bool _isMoved = true;
     private DG.Tweening.Sequence _tileMovements;
+    private SignalBus _signalBus;
+    private Settings _settings;
 
-    public event UnityAction<int> ScoreChanged;
-    public event UnityAction GameOver;
-
-    private void OnEnable()
+    public GridManager(Settings settings, Tile.Factory tileFactory, SignalBus signalBus)
     {
-        _swipeDetection.Swipe += OnSwipe;
+        _settings = settings;
+        _tileFactory = tileFactory;
+        _signalBus = signalBus;
     }
 
-    private void OnDisable()
+    public void Initialize()
     {
-        _swipeDetection.Swipe -= OnSwipe;
-    }
-
-    private void Start()
-    {
-        NumberRenderer.SetTilesCount(_width * _height);
+        NumberRenderer.SetTilesCount(_settings.Width * _settings.Height);
+        CalculateStartingPosition();
         InitializeGrid();
+
+        _signalBus.Subscribe<SwipeSignal>(x => OnSwipe(x.Direction));
+    }
+
+    public void Dispose()
+    {
+        _signalBus.TryUnsubscribe<SwipeSignal>(x => OnSwipe(x.Direction));
     }
 
     private void GameOverCheck()
     {
-        for(int y = 0; y < _height; y++)
+        for(int y = 0; y < _settings.Height; y++)
         {
-            for(int x = 0; x < _width; x++)
+            for(int x = 0; x < _settings.Width; x++)
             {
                 bool isGameOver = true;
                 int currentNumber = _tiles[x, y].Value;
 
-                if(y != _height - 1 && currentNumber == _tiles[x, y + 1].Value)
+                if(y != _settings.Height - 1 && currentNumber == _tiles[x, y + 1].Value)
                 {
                     isGameOver = false;
                 }
 
-                if(x != _width - 1 && currentNumber == _tiles[x + 1, y].Value)
+                if(x != _settings.Width - 1 && currentNumber == _tiles[x + 1, y].Value)
                 {
                     isGameOver = false;
                 }
@@ -65,12 +62,12 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        GameOver?.Invoke();
+        _signalBus.Fire<GameOverSignal>();
     }
 
     private void AddScore(int value)
     {
-        ScoreChanged?.Invoke(value);
+        _signalBus.Fire(new ScoreChangedSignal() { Score = value });
     }
 
     private void OnMovementComplete()
@@ -112,16 +109,16 @@ public class GridManager : MonoBehaviour
     {
         int posibleTilePos = 1;
 
-        for(int y = 0; y < _height; y++)
+        for(int y = 0; y < _settings.Height; y++)
         {
-            for(int x = 1; x < _width; x++)
+            for(int x = 1; x < _settings.Width; x++)
             {
                 if(!_tiles[x, y].IsEmpty)
                 {
                     for(posibleTilePos = x - 1; posibleTilePos > 0 && _tiles[posibleTilePos, y].IsEmpty; posibleTilePos--)
                     {}
 
-                    if(posibleTilePos == _width || !(_tiles[posibleTilePos, y].IsEmpty || _tiles[posibleTilePos, y].Value == _tiles[x, y].Value))
+                    if(posibleTilePos == _settings.Width || !(_tiles[posibleTilePos, y].IsEmpty || _tiles[posibleTilePos, y].Value == _tiles[x, y].Value))
                     {
                         posibleTilePos++;
                     }
@@ -139,18 +136,18 @@ public class GridManager : MonoBehaviour
     {
         int posibleTilePos = 1;
 
-        for(int y = 0; y < _height; y++)
+        for(int y = 0; y < _settings.Height; y++)
         {
-            for(int x = _width - 1; x >= 0; x--)
+            for(int x = _settings.Width - 1; x >= 0; x--)
             {
                 if(!_tiles[x, y].IsEmpty)
                 {
-                    for(posibleTilePos = x + 1; posibleTilePos < _width - 1 && _tiles[posibleTilePos, y].IsEmpty; posibleTilePos++)
+                    for(posibleTilePos = x + 1; posibleTilePos < _settings.Width - 1 && _tiles[posibleTilePos, y].IsEmpty; posibleTilePos++)
                     {
 
                     }
 
-                    if(posibleTilePos == _width || !(_tiles[posibleTilePos, y].IsEmpty || _tiles[posibleTilePos, y].Value == _tiles[x, y].Value))
+                    if(posibleTilePos == _settings.Width || !(_tiles[posibleTilePos, y].IsEmpty || _tiles[posibleTilePos, y].Value == _tiles[x, y].Value))
                     {
                         posibleTilePos--;
                     }
@@ -168,16 +165,16 @@ public class GridManager : MonoBehaviour
     {
         int posibleTilePos = 1;
 
-        for(int x = 0; x < _width; x++)
+        for(int x = 0; x < _settings.Width; x++)
         {
-            for(int y = _width - 1; y >= 0; y--)
+            for(int y = _settings.Width - 1; y >= 0; y--)
             {
                 if(!_tiles[x, y].IsEmpty)
                 {
-                    for(posibleTilePos = y + 1; posibleTilePos < _height - 1 && _tiles[x, posibleTilePos].IsEmpty; posibleTilePos++)
+                    for(posibleTilePos = y + 1; posibleTilePos < _settings.Height - 1 && _tiles[x, posibleTilePos].IsEmpty; posibleTilePos++)
                     {}
 
-                    if(posibleTilePos == _height || !(_tiles[x, posibleTilePos].IsEmpty || _tiles[x, posibleTilePos].Value == _tiles[x, y].Value))
+                    if(posibleTilePos == _settings.Height || !(_tiles[x, posibleTilePos].IsEmpty || _tiles[x, posibleTilePos].Value == _tiles[x, y].Value))
                     {
                         posibleTilePos--;
                     }
@@ -195,16 +192,16 @@ public class GridManager : MonoBehaviour
     {
         int posibleTilePos = 1;
 
-        for(int x = 0; x < _width; x++)
+        for(int x = 0; x < _settings.Width; x++)
         {
-            for(int y = 1; y < _height; y++)
+            for(int y = 1; y < _settings.Height; y++)
             {
                 if(!_tiles[x, y].IsEmpty)
                 {
                     for(posibleTilePos = y - 1; posibleTilePos > 0 && _tiles[x, posibleTilePos].IsEmpty; posibleTilePos--)
                     {}
 
-                    if(posibleTilePos == _height || !(_tiles[x, posibleTilePos].IsEmpty || _tiles[x, posibleTilePos].Value == _tiles[x, y].Value))
+                    if(posibleTilePos == _settings.Height || !(_tiles[x, posibleTilePos].IsEmpty || _tiles[x, posibleTilePos].Value == _tiles[x, y].Value))
                     {
                         posibleTilePos++;
                     }
@@ -238,18 +235,26 @@ public class GridManager : MonoBehaviour
         currentTile.RemoveNumber();
     }
 
+    private void CalculateStartingPosition()
+    {
+        _startPosition = new Vector2(-CalculaStartCoordinate(_settings.Width), -CalculaStartCoordinate(_settings.Height)); 
+    }
+
+    float CalculaStartCoordinate(int tileCount)
+    {
+        return _settings.TileSpacing * tileCount / 2f - (_settings.TileSpacing - 1) / 2f - 0.5f;
+    }
+
     private void InitializeGrid()
     {
-        Vector2 centerPosition = gameObject.transform.position;
+        _tiles = new Tile[_settings.Width, _settings.Height];
 
-        _tiles = new Tile[_width, _height];
-
-        for(int x = 0; x < _width; x++)
+        for(int x = 0; x < _settings.Width; x++)
         {
-            for(int y = 0; y < _height; y++)
+            for(int y = 0; y < _settings.Height; y++)
             {
-                Vector2 tilePos = new Vector2(x * _tileSpacing + centerPosition.x, y * _tileSpacing + centerPosition.y);
-                _tiles[x, y] = Instantiate(_tilePrefab, tilePos, Quaternion.identity, gameObject.transform);
+                Vector2 tilePos = new Vector2(x * _settings.TileSpacing + _startPosition.x, y * _settings.TileSpacing + _startPosition.y);
+                _tiles[x, y] = _tileFactory.Create(tilePos);
             }
         }
 
@@ -260,9 +265,9 @@ public class GridManager : MonoBehaviour
 
     public void ResetGrid()
     {
-        for(int y = 0; y < _height; y++)
+        for(int y = 0; y < _settings.Height; y++)
         {
-            for(int x = 0; x < _width; x++)
+            for(int x = 0; x < _settings.Width; x++)
             {
                 if(!_tiles[x, y].IsEmpty)
                 {
@@ -278,9 +283,9 @@ public class GridManager : MonoBehaviour
 
     private void RenderGrid()
     {
-        for(int x = 0; x < _width; x++)
+        for(int x = 0; x < _settings.Width; x++)
         {
-            for(int y = 0; y < _height; y++)
+            for(int y = 0; y < _settings.Height; y++)
             {
                 _tiles[x, y].RenderTile();
             }
@@ -291,9 +296,9 @@ public class GridManager : MonoBehaviour
     {
         List<Vector2Int> emptyCells = new List<Vector2Int>();
 
-        for(int i = 0; i < _width; i++)
+        for(int i = 0; i < _settings.Width; i++)
         {
-            for(int j = 0; j < _height; j++)
+            for(int j = 0; j < _settings.Height; j++)
             {
                 if(_tiles[i, j].IsEmpty)
                 {
@@ -312,5 +317,12 @@ public class GridManager : MonoBehaviour
         {
             GameOverCheck();
         }
+    }
+
+    [Serializable]
+    public class Settings
+    {
+        public int Width, Height;
+        public float TileSpacing;
     }
 }

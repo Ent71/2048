@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 461c8ad3b2323a948bc0a5f1f964863d, type: 3}
+  m_Name: GameSettingsInstaller
+  m_EditorClassIdentifier: 
+  DynamicCameraWidthScaling:
+    sizeInMeters: 6
+  GridManager:
+    StartPosition: {x: 0, y: 0}
+    Width: 4
+    Height: 4
+    TileSpacing: 1.25
+  SwipeDetection:
+    SwipeResistance: 100
+  GameInstaller:
+    TilePrefab: {fileID: 1247879677998361872, guid: b97761147da896f4485edaf7b4ede7a9, type: 3}
+  NumberRenderer:
+    StartColor: {r: 0, g: 1, b: 0.35307336, a: 0.16470589}
+    TargetColor: {r: 1, g: 0, b: 0, a: 1}
+  TileMovement:
+    Duration: 0.33

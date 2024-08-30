@@ -1,13 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using Zenject;
 
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] private NumberRenderer _numberRenderer;
-    [SerializeField] private TileMovement _tileMovement;
+    private NumberRenderer _numberRenderer;
+    private TileMovement _tileMovement;
+
+    [Inject]
+    private void Construct(NumberRenderer numberRenderer, TileMovement tileMovement, Vector2 position)
+    {
+        _numberRenderer = numberRenderer;
+        _tileMovement = tileMovement;
+        transform.position = position;
+    }
 
     private int _value = 0;
     private int _powerOfTwo = 0;
@@ -56,5 +63,10 @@ public class Tile : MonoBehaviour
     public Tween MoveTile(Vector3 target)
     {
         return _tileMovement.MoveTile(target);
+    }
+
+    public class Factory : PlaceholderFactory<Vector2, Tile>
+    {
+
     }
 }

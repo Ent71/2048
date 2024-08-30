@@ -1,19 +1,21 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro.SpriteAssetUtilities;
-using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class NumberRenderer : MonoBehaviour
 {
     [SerializeField] private TextMesh _text;
-    [SerializeField] private Color _startColor;
-    [SerializeField] private Color _targetColor;
 
+    Settings _settings;
     private SpriteRenderer _spriteRenderer;
     private static int _tilesCount = 2;
+
+    [Inject]
+    private void Construct(Settings settings)
+    {
+        _settings = settings;
+    }
 
     public static void SetTilesCount(int tilesCount)
     {
@@ -42,6 +44,13 @@ public class NumberRenderer : MonoBehaviour
 
     public void ChangeColor(int powerOfTwo)
     {
-        _spriteRenderer.color = Color.Lerp(_startColor, _targetColor, (float)powerOfTwo / _tilesCount);
+        _spriteRenderer.color = Color.Lerp(_settings.StartColor, _settings.TargetColor, (float)powerOfTwo / _tilesCount);
+    }
+
+    [Serializable]
+    public class Settings
+    {
+        public Color StartColor;
+        public Color TargetColor;
     }
 }

@@ -1,30 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class Score : MonoBehaviour
 {
     [SerializeField] private TMP_Text _currentScoreText;
     [SerializeField] private TMP_Text _bestScoreText;
-    [SerializeField] private GridManager _gridManager;
     [SerializeField] private Button _restartButton;
-
+    private SignalBus _signalBus;
     private int _currentScore = 0, _bestScore = 0;
+
+    [Inject]
+    private void Construct(SignalBus signalBus)
+    {
+        _signalBus = signalBus;
+    }
 
     private void OnEnable()
     {
         _restartButton.onClick.AddListener(OnRestartButton);
-        _gridManager.ScoreChanged += OnScoreChanged;
-        _gridManager.GameOver += OnGameOver;
+        _signalBus.Subscribe<GameOverSignal>(x => OnGameOver());
+        _signalBus.Subscribe<ScoreChangedSignal>(x => OnScoreChanged(x.Score));
     }
 
     private void OnDisable()
     {
         _restartButton.onClick.RemoveListener(OnRestartButton);
-        _gridManager.ScoreChanged -= OnScoreChanged;
-        _gridManager.GameOver -= OnGameOver;
+        _signalBus.TryUnsubscribe<GameOverSignal>(x => OnGameOver());
+        _signalBus.TryUnsubscribe<ScoreChangedSignal>(x => OnScoreChanged(x.Score));
     }
 
     private void OnScoreChanged(int value)

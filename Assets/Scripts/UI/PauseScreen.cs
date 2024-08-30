@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class PauseScreen : MonoBehaviour
@@ -10,10 +9,18 @@ public class PauseScreen : MonoBehaviour
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _exitButton;
     [SerializeField] private Button _pauseButton;
-    [SerializeField] private GridManager _gridManager;
+    private GridManager _gridManager;
+    private SignalBus _signalBus;
 
-     private CanvasGroup _pauseScreenGroup;
+    private CanvasGroup _pauseScreenGroup;
     
+    [Inject]
+    private void Construct(GridManager gridManager, SignalBus signalBus)
+    {
+        _gridManager = gridManager;
+        _signalBus = signalBus;
+    }
+
     void Start()
     {
         _pauseScreenGroup = GetComponent<CanvasGroup>();
@@ -22,7 +29,7 @@ public class PauseScreen : MonoBehaviour
 
     private void OnEnable()
     {
-        _gridManager.GameOver += OnGameOver;
+        _signalBus.Subscribe<GameOverSignal>(x => OnGameOver());
         _continueButton.onClick.AddListener(OnContinueButtonClick);
         _restartButton.onClick.AddListener(OnRestartButtonClick);
         _exitButton.onClick.AddListener(OnExitButtonClick);
@@ -31,7 +38,7 @@ public class PauseScreen : MonoBehaviour
 
     private void OnDisable()
     {
-        _gridManager.GameOver -= OnGameOver;
+        _signalBus.TryUnsubscribe<GameOverSignal>(x => OnGameOver());
         _continueButton.onClick.RemoveListener(OnContinueButtonClick);
         _restartButton.onClick.RemoveListener(OnRestartButtonClick);
         _exitButton.onClick.RemoveListener(OnExitButtonClick);

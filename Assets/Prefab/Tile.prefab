@@ -106,8 +106,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 196717748144307609}
-  - component: {fileID: 8084689151898000137}
   - component: {fileID: 3438264005631197631}
+  - component: {fileID: 3120904347399935405}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -131,7 +131,19 @@ Transform:
   - {fileID: 7507483732050001870}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &8084689151898000137
+--- !u!114 &3438264005631197631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247879677998361872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6107db39629cd0749a02d136f295b981, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!212 &3120904347399935405
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -183,20 +195,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3438264005631197631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1247879677998361872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6107db39629cd0749a02d136f295b981, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _numberRenderer: {fileID: 2211260322854414554}
-  _tileMovement: {fileID: 5757872329504606612}
 --- !u!1 &1763408141441424695
 GameObject:
   m_ObjectHideFlags: 0
@@ -296,7 +294,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae611537fad4f004185afa2f769fdc72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _duration: 0.33
 --- !u!114 &2211260322854414554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,5 +307,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 5366687508413980814}
-  _startColor: {r: 0.109803915, g: 1, b: 0.13869795, a: 1}
-  _targetColor: {r: 0.7651262, g: 0, b: 1, a: 1}

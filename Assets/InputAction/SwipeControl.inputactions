@@ -1,0 +1,54 @@
+{
+    "name": "SwipeControl",
+    "maps": [
+        {
+            "name": "SwipeDetection",
+            "id": "b458a0b4-059d-41e1-b95b-0858f87b8b29",
+            "actions": [
+                {
+                    "name": "Position",
+                    "type": "Value",
+                    "id": "2dc526c5-3c8a-4e99-b376-a9ae72b314b5",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Press",
+                    "type": "Button",
+                    "id": "60f868dd-f1c4-44e0-95cb-39db877e4db7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b0f9c99d-342e-499e-95bc-9ad07865845f",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f34eb6f0-380d-43ec-b1bd-bc714ebe817b",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Press",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
