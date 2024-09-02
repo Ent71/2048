@@ -17,6 +17,8 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<GridManager>().AsSingle();
         Container.BindInterfacesAndSelfTo<SwipeDetection>().AsSingle().NonLazy();
 
+        Container.Bind<SwipeControl>().FromNew().AsSingle();
+
         Container.BindFactory<Vector2, Tile, Tile.Factory>().FromComponentInNewPrefab(_settings.TilePrefab).UnderTransformGroup("Tiles");
 
         Container.Bind<TileMovement>().FromComponentInChildren().WhenInjectedInto<Tile>();

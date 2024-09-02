@@ -15,16 +15,15 @@ MonoBehaviour:
   DynamicCameraWidthScaling:
     sizeInMeters: 6
   GridManager:
-    StartPosition: {x: 0, y: 0}
     Width: 4
     Height: 4
     TileSpacing: 1.25
   SwipeDetection:
-    SwipeResistance: 100
+    SwipeResistance: 50
   GameInstaller:
     TilePrefab: {fileID: 1247879677998361872, guid: b97761147da896f4485edaf7b4ede7a9, type: 3}
   NumberRenderer:
     StartColor: {r: 0, g: 1, b: 0.35307336, a: 0.16470589}
     TargetColor: {r: 1, g: 0, b: 0, a: 1}
   TileMovement:
-    Duration: 0.33
+    Duration: 0.18
