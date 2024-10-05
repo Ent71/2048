@@ -17,12 +17,13 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<GridManager>().AsSingle();
         Container.BindInterfacesAndSelfTo<SwipeDetection>().AsSingle().NonLazy();
 
-        Container.Bind<SwipeControl>().FromNew().AsSingle();
+        // Container.Bind<SwipeControl>().FromNew().AsSingle();
 
         Container.BindFactory<Vector2, Tile, Tile.Factory>().FromComponentInNewPrefab(_settings.TilePrefab).UnderTransformGroup("Tiles");
 
         Container.Bind<TileMovement>().FromComponentInChildren().WhenInjectedInto<Tile>();
         Container.Bind<NumberRenderer>().FromComponentInChildren().WhenInjectedInto<Tile>();
+        Container.BindInstance<string>("Score2D").WhenInjectedInto<Score>();
     }
 
     [Serializable]

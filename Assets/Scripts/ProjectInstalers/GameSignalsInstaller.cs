@@ -8,6 +8,8 @@ public class GameSignalsInstaller : MonoInstaller
 
         Container.DeclareSignal<GameOverSignal>();
         Container.DeclareSignal<ScoreChangedSignal>();
+        Container.DeclareSignal<RestartPressedSignal>();
         Container.DeclareSignal<SwipeSignal>();
+        Container.DeclareSignal<CubeCountChangedSignal>();
     }
 }

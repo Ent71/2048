@@ -9,12 +9,21 @@ public class Score : MonoBehaviour
     [SerializeField] private TMP_Text _bestScoreText;
     [SerializeField] private Button _restartButton;
     private SignalBus _signalBus;
+    private string _saveName;
     private int _currentScore = 0, _bestScore = 0;
 
     [Inject]
-    private void Construct(SignalBus signalBus)
+    private void Construct(SignalBus signalBus, string saveName)
     {
         _signalBus = signalBus;
+        _saveName = saveName;
+    }
+
+    private void Awake()
+    {
+        Debug.Log("load");
+        _bestScore = PlayerPrefs.GetInt(_saveName);
+        ChangeMaxScore();
     }
 
     private void OnEnable()
@@ -64,5 +73,11 @@ public class Score : MonoBehaviour
         {
             _bestScoreText.text = _currentScoreText.text;
         }
+    }
+
+    public void SaveResult()
+    {
+        Debug.Log("save");
+        PlayerPrefs.SetInt(_saveName, _bestScore);
     }
 }

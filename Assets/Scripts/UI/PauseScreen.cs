@@ -1,4 +1,6 @@
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Zenject;
 
@@ -9,15 +11,16 @@ public class PauseScreen : MonoBehaviour
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _exitButton;
     [SerializeField] private Button _pauseButton;
-    private GridManager _gridManager;
+    [SerializeField] private Score _score;
     private SignalBus _signalBus;
+    private TimeHandler _timeHandler;
 
     private CanvasGroup _pauseScreenGroup;
     
     [Inject]
-    private void Construct(GridManager gridManager, SignalBus signalBus)
+    private void Construct(SignalBus signalBus, TimeHandler timeHandler)
     {
-        _gridManager = gridManager;
+        _timeHandler = timeHandler;
         _signalBus = signalBus;
     }
 
@@ -58,13 +61,14 @@ public class PauseScreen : MonoBehaviour
 
     private void OnRestartButtonClick()
     {
-        _gridManager.ResetGrid();
+        _signalBus.Fire<RestartPressedSignal>();
         ClosePauseScreen();
     }
 
     private void OnExitButtonClick()
     {
-        Application.Quit();
+        _score.SaveResult();
+        SceneManager.LoadScene("MainMenu");
     }
 
     private void ClosePauseScreen()
@@ -72,7 +76,7 @@ public class PauseScreen : MonoBehaviour
         _pauseScreenGroup.alpha = 0;
         _pauseScreenGroup.blocksRaycasts = false;
         _pauseButton.gameObject.SetActive(true);
-        Time.timeScale = 1;
+        StartTime();
     }
 
     private void OpenPauseScreen()
@@ -80,7 +84,17 @@ public class PauseScreen : MonoBehaviour
         _pauseScreenGroup.alpha = 1;
         _pauseScreenGroup.blocksRaycasts = true;
         _pauseButton.gameObject.SetActive(false);
-        Time.timeScale = 0;
+        StopTime();
+    }
+
+    private void StartTime()
+    {
+        _timeHandler.StartTime();
+    }
+
+    private void StopTime()
+    {
+        _timeHandler.StopTime();
     }
 
     private void OnPauseButtonClick()

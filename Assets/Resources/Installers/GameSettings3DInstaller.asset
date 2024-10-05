@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d365d66e029604b881167b18657ed6, type: 3}
+  m_Name: GameSettings3DInstaller
+  m_EditorClassIdentifier: 
+  GameInstaller:
+    CubePrefab: {fileID: 6568716018100179488, guid: 150a563000985454a8612289df9c8c56, type: 3}
+    CollisionEffectPrefab: {fileID: 8218371334123365901, guid: f3b6abac17ccb1148aebb5bd15c309e2, type: 3}
+  FireConfigurations:
+    FireStrength: 100
+    FireDirection: {x: 0, y: 0, z: 1}
+    TimeBetweenFire: 1.5
+    MaximumCubeCount: 3
+  MergeSettings:
+    DefaultMaterial: {fileID: 2100000, guid: cd27c7d39955b514b9001a31864c62d9, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 1fb935a898f58004d8e2eb905abdf9b1, type: 2}
+    - {fileID: 2100000, guid: 78d3dc5e2bc78744f96365653e8ba97b, type: 2}
+    - {fileID: 2100000, guid: 69ed1b573a2b40b4e9cc4029a6a98290, type: 2}
+    - {fileID: 2100000, guid: 66f51d6289552564dafee60c4014e008, type: 2}
+    - {fileID: 2100000, guid: e0f16961d367e6e46aa9fb5abbd807ff, type: 2}
+    - {fileID: 2100000, guid: db1f22792a4bfb748af7e539fe37b28b, type: 2}
+    - {fileID: 2100000, guid: eac27967ca152fa40963c394f1c88fc2, type: 2}
+    - {fileID: 2100000, guid: 6e18082a585bb964483afd217e00c77a, type: 2}
+    - {fileID: 2100000, guid: d144f7bb01b7346429131bb3bc5f40cf, type: 2}
+    - {fileID: 2100000, guid: c6b9898c293f81a47bfebad3c6b9c1f5, type: 2}
+    - {fileID: 2100000, guid: 35c8caea489077e4c87071f4185d0ff5, type: 2}
+    - {fileID: 2100000, guid: 5ecb9e36f711ed44bb319add391eef49, type: 2}
+    - {fileID: 2100000, guid: 74d21fcbdeed5b94a99e78cffe750d64, type: 2}
+    - {fileID: 2100000, guid: 35c4c81a5e8471c4abb95d22dfbf27b3, type: 2}
+    - {fileID: 2100000, guid: 1bb889a2b3a678a4299ac3ecece7718d, type: 2}
+    - {fileID: 2100000, guid: 1f9884a1955524440aea55f7d32bef27, type: 2}
+    MergeTime: 0.125

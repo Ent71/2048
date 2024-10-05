@@ -29,11 +29,13 @@ public class GridManager : IDisposable, Zenject.IInitializable
         InitializeGrid();
 
         _signalBus.Subscribe<SwipeSignal>(x => OnSwipe(x.Direction));
+        _signalBus.Subscribe<RestartPressedSignal>(ResetGrid);
     }
 
     public void Dispose()
     {
         _signalBus.TryUnsubscribe<SwipeSignal>(x => OnSwipe(x.Direction));
+        _signalBus.TryUnsubscribe<RestartPressedSignal>(ResetGrid);
     }
 
     private void GameOverCheck()
