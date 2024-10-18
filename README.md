@@ -1,3 +1,5 @@
 # 2048 Unity Game
 
-## Controls by swiping
+## Classic version controls by swiping
+
+## 3D Control the 3D version by dragging and dropping the cube
