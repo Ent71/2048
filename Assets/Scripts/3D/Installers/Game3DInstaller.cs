@@ -9,16 +9,12 @@ public class Game3DInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        // Container.BindInterfacesTo<Cube>().AsSingle();
-        // Container.Bind<FireControls>().FromNew().AsSingle(); 
-
-        // Container.BindFactory<Cube, Cube.Factory>().FromComponentInNewPrefab(_settings.CubePrefab).UnderTransformGroup("Cubes").AsSingle(); // TODO: pool
         Container.BindFactory<Cube, Cube.Factory>().FromMonoPoolableMemoryPool(
             x => x.WithInitialSize(17).FromComponentInNewPrefab(_settings.CubePrefab).UnderTransformGroup("Cubes"));
         Container.BindFactory<Effect, Effect.Factory>().FromMonoPoolableMemoryPool(
             x => x.WithInitialSize(20).FromComponentInNewPrefab(_settings.CollisionEffectPrefab).UnderTransformGroup("CollisionEffects"));
-        // Container.BindFactory<Effect, Effect.Factory>().FromComponentInNewPrefab(_settings.CollisionEffectPrefab).UnderTransformGroup("CollisionEffects").AsSingle();
         
+        Container.Bind<TrailEffect>().FromComponentInChildren().WhenInjectedInto<Cube>();
         Container.Bind<MergeEffect>().FromComponentInChildren().WhenInjectedInto<Cube>();
         Container.Bind<Canvas>().FromComponentInChildren().WhenInjectedInto<Cube>();
         Container.BindInstance<string>("Score3D").WhenInjectedInto<Score>();

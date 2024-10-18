@@ -29,7 +29,7 @@ public class Cubes : MonoBehaviour
 
         foreach (Cube cube in _cubes)
         {
-            Destroy(cube.gameObject);
+            cube.Dispose();
         }
     }
 }

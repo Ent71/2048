@@ -17,7 +17,7 @@ public class FireManager : MonoBehaviour
     private Cube _currentCube;
     private Settings _settings;
     private float _elapsedTimeAfterFire = 0f;
-    private float _currentLerp = 0.5f; // TODO: Add default value in settings
+    private float _currentLerp = 0.5f;
     private bool _isReadyToFire = true;
     private bool _isOnPress = false;
     private float _pressPreviousPosition;
@@ -57,8 +57,7 @@ public class FireManager : MonoBehaviour
 
     private void Update()
     {
-        // Debug.Log(_swipeControls.SwipeDetection.Press.IsPressed());
-        if(Time.timeScale == 0) // TODO: rewrite using signals
+        if(Time.timeScale == 0)
         {
             return;
         }
@@ -70,7 +69,6 @@ public class FireManager : MonoBehaviour
             {
                 float sign = _pressPreviousPosition > newPressPosition ? -1 : 1;
                 _currentLerp += sign * MathF.Abs((_pressPreviousPosition - newPressPosition) / (float)Screen.width);
-                // Debug.Log($"press positions: prev: {_pressPreviousPosition} now: {newPressPosition}, width: {Screen.width}, currentLerp = {_currentLerp}, Mathf: {MathF.Abs((_pressPreviousPosition - newPressPosition) / (float)Screen.width)}");
                 
                 if(_currentLerp > 1f)
                 {
@@ -101,7 +99,7 @@ public class FireManager : MonoBehaviour
 
     private void PressBegin()
     {
-        Debug.Log("begin");
+        
         Vector2 pressPosiotion = _swipeControls.SwipeDetection.Position.ReadValue<Vector2>();
 
         if(pressPosiotion.y < Screen.height / 2)
@@ -113,11 +111,6 @@ public class FireManager : MonoBehaviour
 
     private void OnFire()
     {
-        Debug.Log("end");
-        // if(Time.timeScale == 0) // TODO: rewrite using signals
-        // {
-        //     return;
-        // }
         if(!_isOnPress || _currentCube == null)
         {
             return;
@@ -127,6 +120,7 @@ public class FireManager : MonoBehaviour
 
         if(_isReadyToFire)
         {
+            _currentCube.EnableTrail();
             _currentCube.FireCube(_settings.FireDirection * _settings.FireStrength);
             _currentLerp = 0.5f;
             _isReadyToFire = false;
@@ -141,23 +135,17 @@ public class FireManager : MonoBehaviour
         {
             _signalBus.Fire<GameOverSignal>();
         }
-
+        
         _currentCube = _cubeFactory.Create();
         _currentCube.DisableGravity();
+        _currentCube.DisableTrail();
         _currentCube.transform.position = _startPoint.position;
     }
 
     private void OnRestartSignal()
     {
         _isReadyToFire = false;
-
-        if(_currentCube != null)
-        {
-            // Destroy(_currentCube.gameObject); // TODO: poool
-            _currentCube.EnableGravity();
-            _currentCube.Dispose();
-            _currentCube = null;
-        }
+        _currentCube = null;
 
         _elapsedTimeAfterFire = 0f;
         GenerateCube();

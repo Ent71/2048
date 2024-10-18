@@ -5,7 +5,6 @@ using Zenject;
 
 public class CubeSpawner : MonoBehaviour
 {
-    // [SerializeField] private List<SpawnPoint> _startPositions;
     private SpawnPoint[] _startPositions;
     private Cube.Factory _cubeFactory;
     private SignalBus _signalBus;

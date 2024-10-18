@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.2273, y: 13.0387, z: 16.42}
-  m_LocalScale: {x: 7.6586165, y: 7.6586165, z: 7.6586165}
+  m_LocalScale: {x: 7.658617, y: 7.658617, z: 7.658617}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5547599956090084315}
@@ -160,6 +160,7 @@ GameObject:
   - component: {fileID: 8270477395803792176}
   - component: {fileID: 6943930780878848822}
   - component: {fileID: 8409560084539375122}
+  - component: {fileID: 4412916923695394459}
   m_Layer: 0
   m_Name: Trail
   m_TagString: Untagged
@@ -4980,6 +4981,18 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &4412916923695394459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6483879156096647758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4bd954a2c90e574585cefb844b8ad24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6761977508146708927
 GameObject:
   m_ObjectHideFlags: 0

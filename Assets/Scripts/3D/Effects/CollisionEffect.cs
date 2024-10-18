@@ -6,6 +6,4 @@ using Zenject;
 [RequireComponent(typeof(ParticleSystem))]
 public class CollisionEffect : Effect
 {
-    
-
 }

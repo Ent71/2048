@@ -5,10 +5,6 @@ using Zenject;
 [RequireComponent(typeof(Camera))]
 public class DynamicCameraWidthScaling : MonoBehaviour
 {
-    public void ButtonPressed()
-    {
-        Debug.Log("button pressed");
-    }
     private Settings _settings;
     private Camera _camera;
     

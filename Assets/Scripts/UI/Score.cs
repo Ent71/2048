@@ -19,41 +19,33 @@ public class Score : MonoBehaviour
         _saveName = saveName;
     }
 
-    private void Awake()
+    private void Start()
     {
-        Debug.Log("load");
         _bestScore = PlayerPrefs.GetInt(_saveName);
-        ChangeMaxScore();
+        _bestScoreText.text = _bestScore.ToString();
     }
 
     private void OnEnable()
     {
         _restartButton.onClick.AddListener(OnRestartButton);
-        _signalBus.Subscribe<GameOverSignal>(x => OnGameOver());
         _signalBus.Subscribe<ScoreChangedSignal>(x => OnScoreChanged(x.Score));
     }
 
     private void OnDisable()
     {
         _restartButton.onClick.RemoveListener(OnRestartButton);
-        _signalBus.TryUnsubscribe<GameOverSignal>(x => OnGameOver());
         _signalBus.TryUnsubscribe<ScoreChangedSignal>(x => OnScoreChanged(x.Score));
     }
 
     private void OnScoreChanged(int value)
     {
         AddScore(value);
+        ChangeMaxScore();
     }
 
     private void OnRestartButton()
     {
-        ChangeMaxScore();
         ChangeScore(0);
-    }
-
-    private void OnGameOver()
-    {
-        ChangeMaxScore();
     }
 
     private void AddScore(int value)
@@ -71,13 +63,16 @@ public class Score : MonoBehaviour
     {
         if(_currentScore > _bestScore)
         {
+            _bestScore = _currentScore;
             _bestScoreText.text = _currentScoreText.text;
+            SaveResult();
         }
     }
 
-    public void SaveResult()
+    private void SaveResult()
     {
-        Debug.Log("save");
+        
         PlayerPrefs.SetInt(_saveName, _bestScore);
+        PlayerPrefs.Save();
     }
 }

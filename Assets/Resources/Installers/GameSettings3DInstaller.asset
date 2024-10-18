@@ -19,7 +19,7 @@ MonoBehaviour:
     FireStrength: 100
     FireDirection: {x: 0, y: 0, z: 1}
     TimeBetweenFire: 1.5
-    MaximumCubeCount: 3
+    MaximumCubeCount: 16
   MergeSettings:
     DefaultMaterial: {fileID: 2100000, guid: cd27c7d39955b514b9001a31864c62d9, type: 2}
     Materials:

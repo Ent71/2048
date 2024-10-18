@@ -1,4 +1,3 @@
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -16,7 +15,7 @@ public class PauseScreen : MonoBehaviour
     private TimeHandler _timeHandler;
 
     private CanvasGroup _pauseScreenGroup;
-    
+
     [Inject]
     private void Construct(SignalBus signalBus, TimeHandler timeHandler)
     {
@@ -67,7 +66,6 @@ public class PauseScreen : MonoBehaviour
 
     private void OnExitButtonClick()
     {
-        _score.SaveResult();
         SceneManager.LoadScene("MainMenu");
     }
 
